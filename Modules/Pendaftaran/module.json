@@ -1,0 +1,11 @@
+{
+    "name": "Pendaftaran",
+    "alias": "pendaftaran",
+    "description": "Katalog buku dan peminjaman SiPustaka",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Pendaftaran\\Providers\\PendaftaranServiceProvider"
+    ],
+    "files": []
+}

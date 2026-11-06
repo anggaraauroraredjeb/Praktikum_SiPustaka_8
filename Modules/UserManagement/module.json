@@ -1,0 +1,11 @@
+{
+    "name": "UserManagement",
+    "alias": "user-management",
+    "description": "Pengelolaan akun dan role pengguna",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\UserManagement\\Providers\\UserManagementServiceProvider"
+    ],
+    "files": []
+}
