@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Modules\Pendaftaran\Http\Requests\BookRequest;
 use Modules\Pendaftaran\Http\Requests\StoreLoanRequest;
 use Modules\Pendaftaran\Http\Requests\UpdateLoanRequest;
@@ -16,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PendaftaranController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): InertiaResponse
     {
         $search = trim((string) $request->query('search', ''));
         $books = Book::query()->when($search, fn ($query) => $query->where(function ($query) use ($search) {
@@ -27,7 +28,7 @@ class PendaftaranController extends Controller
             ->latest()->paginate(10, ['*'], 'loans_page');
         $allBooks = Book::orderBy('title')->get();
 
-        return view('pendaftaran::index', compact('books', 'loans', 'allBooks', 'search'));
+        return Inertia::render('Pendaftaran/Index', compact('books', 'loans', 'allBooks', 'search'));
     }
 
     public function storeBook(BookRequest $request): JsonResponse

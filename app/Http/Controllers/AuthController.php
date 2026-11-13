@@ -6,13 +6,14 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class AuthController extends Controller
 {
-    public function loginForm(): View
+    public function loginForm(): Response
     {
-        return view('auth.login');
+        return Inertia::render('Auth/Login');
     }
 
     public function login(Request $request): RedirectResponse
@@ -31,9 +32,9 @@ class AuthController extends Controller
         return redirect()->intended(route('dashboard'));
     }
 
-    public function registerForm(): View
+    public function registerForm(): Response
     {
-        return view('auth.register');
+        return Inertia::render('Auth/Register');
     }
 
     public function register(Request $request): RedirectResponse

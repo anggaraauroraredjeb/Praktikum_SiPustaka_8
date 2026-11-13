@@ -7,15 +7,16 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 use Modules\UserManagement\Http\Requests\StoreUserRequest;
 use Modules\UserManagement\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
-    public function index(): View
+    public function index(): Response
     {
-        return view('user-management::index', ['users' => User::withCount('loans')->orderBy('name')->paginate(12)]);
+        return Inertia::render('UserManagement/Index', ['users' => User::withCount('loans')->orderBy('name')->paginate(12)]);
     }
 
     public function store(StoreUserRequest $request): RedirectResponse

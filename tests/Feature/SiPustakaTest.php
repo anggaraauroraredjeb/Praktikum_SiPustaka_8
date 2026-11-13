@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Testing\AssertableInertia as Assert;
 use Modules\Pendaftaran\Models\Book;
 use Modules\Pendaftaran\Models\Loan;
 use Tests\TestCase;
@@ -16,17 +17,20 @@ class SiPustakaTest extends TestCase
 
     public function test_auth_and_module_pages_render_for_the_expected_roles(): void
     {
-        $this->get(route('login'))->assertOk();
-        $this->get(route('register'))->assertOk();
+        config(['inertia.testing.ensure_pages_exist' => false]);
+
+        $this->get(route('home'))->assertInertia(fn (Assert $page) => $page->component('Home'));
+        $this->get(route('login'))->assertInertia(fn (Assert $page) => $page->component('Auth/Login'));
+        $this->get(route('register'))->assertInertia(fn (Assert $page) => $page->component('Auth/Register'));
 
         $user = User::factory()->create(['role' => 'user']);
-        $this->actingAs($user)->get(route('dashboard'))->assertOk();
-        $this->actingAs($user)->get(route('pendaftaran.index'))->assertOk();
+        $this->actingAs($user)->get(route('dashboard'))->assertInertia(fn (Assert $page) => $page->component('Dashboard'));
+        $this->actingAs($user)->get(route('pendaftaran.index'))->assertInertia(fn (Assert $page) => $page->component('Pendaftaran/Index'));
 
         $admin = User::factory()->create(['role' => 'admin']);
-        $this->actingAs($admin)->get(route('dashboard'))->assertOk();
-        $this->actingAs($admin)->get(route('pendaftaran.index'))->assertOk();
-        $this->actingAs($admin)->get(route('users.index'))->assertOk();
+        $this->actingAs($admin)->get(route('dashboard'))->assertInertia(fn (Assert $page) => $page->component('Dashboard'));
+        $this->actingAs($admin)->get(route('pendaftaran.index'))->assertInertia(fn (Assert $page) => $page->component('Pendaftaran/Index'));
+        $this->actingAs($admin)->get(route('users.index'))->assertInertia(fn (Assert $page) => $page->component('UserManagement/Index'));
     }
 
     public function test_registration_always_creates_a_regular_user(): void
